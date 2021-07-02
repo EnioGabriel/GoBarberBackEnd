@@ -1,24 +1,28 @@
 // Responsavel pela regra de negócio
 
 import User from "../infra/typeorm/entities/User";
-import AppError from "@shared/errors/AppError";
+import { injectable, inject } from "tsyringe";
 
-import { getRepository } from "typeorm";
+import AppError from "@shared/errors/AppError";
+import IUserRepository from "../repositories/IUsersRepository";
+
 import { hash } from "bcryptjs";
 
-interface RequestDTO {
+interface IRequest {
   name: string;
   email: string;
   password: string;
 }
 
+@injectable()
 class CreateUserService {
-  public async execute({ name, email, password }: RequestDTO): Promise<User> {
-    const userRepository = getRepository(User);
+  constructor(
+    @inject("UsersRepository")
+    private usersRepository: IUserRepository
+  ) {}
 
-    const checkUserExists = await userRepository.findOne({
-      where: { email },
-    });
+  public async execute({ name, email, password }: IRequest): Promise<User> {
+    const checkUserExists = await this.usersRepository.findByEmail(email);
 
     if (checkUserExists) {
       throw new AppError("Email já está em uso");
@@ -26,13 +30,11 @@ class CreateUserService {
 
     const hashedPassword = await hash(password, 8); // Criptografando a senha
 
-    const user = userRepository.create({
+    const user = this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
     });
-
-    await userRepository.save(user);
 
     return user;
   }
