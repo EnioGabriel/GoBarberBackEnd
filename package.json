@@ -37,6 +37,7 @@
     "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.4.0",
+    "jest": "^27.0.6",
     "prettier": "^2.3.0",
     "ts-node-dev": "^1.1.6",
     "tsconfig-paths": "^3.9.0",
