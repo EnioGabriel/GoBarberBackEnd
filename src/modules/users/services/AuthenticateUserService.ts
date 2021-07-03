@@ -1,12 +1,11 @@
 // Responsavel pela regra de negócio
-
-import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken"; //sign = assinar
 import authConfig from "@config/auth";
 import { injectable, inject } from "tsyringe";
 
 import IUserRepository from "../repositories/IUsersRepository";
 import AppError from "@shared/errors/AppError";
+import IHashProvider from "../providers/hashProvider/models/IHashProvider";
 
 import User from "../infra/typeorm/entities/User";
 
@@ -24,7 +23,10 @@ interface IResponse {
 class AutenticateUserService {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUserRepository
+    private usersRepository: IUserRepository,
+
+    @inject("HashProvider")
+    private hashProvider: IHashProvider
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
@@ -36,7 +38,10 @@ class AutenticateUserService {
 
     // user.password = Senha criptografada la do DB
     // password = senha que o usuário digitou
-    const passwordMatched = await compare(password, user.password); // comparando as senhas
+    const passwordMatched = await this.hashProvider.compareHash(
+      password,
+      user.password
+    ); // comparando as senhas
 
     if (!passwordMatched) {
       throw new AppError("Email/senha incorretos.", 401);

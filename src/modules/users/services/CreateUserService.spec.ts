@@ -1,5 +1,6 @@
 import AppError from "@shared/errors/AppError";
 
+import FakeHashProvider from "../providers/hashProvider/fakes/FakeHashProvider";
 import FakeUsersRepository from "../repositories/fakes/FakeUsersRepository";
 import CreateUserService from "./CreateUserService";
 
@@ -7,7 +8,11 @@ describe("CreateUser", () => {
   // it: isso
   it("should be able to create a new user", async () => {
     const fakeUsersRepository = new FakeUsersRepository();
-    const createAppointment = new CreateUserService(fakeUsersRepository);
+    const fakeHashProvider = new FakeHashProvider();
+    const createAppointment = new CreateUserService(
+      fakeUsersRepository,
+      fakeHashProvider
+    );
 
     const appointment = await createAppointment.execute({
       name: "fulano",
@@ -21,7 +26,11 @@ describe("CreateUser", () => {
   // it: isso
   it("should not be able to create a new user with same email", async () => {
     const fakeUsersRepository = new FakeUsersRepository();
-    const createAppointment = new CreateUserService(fakeUsersRepository);
+    const fakeHashProvider = new FakeHashProvider();
+    const createAppointment = new CreateUserService(
+      fakeUsersRepository,
+      fakeHashProvider
+    );
 
     await createAppointment.execute({
       name: "fulano",
