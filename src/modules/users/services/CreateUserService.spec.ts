@@ -9,12 +9,12 @@ describe("CreateUser", () => {
   it("should be able to create a new user", async () => {
     const fakeUsersRepository = new FakeUsersRepository();
     const fakeHashProvider = new FakeHashProvider();
-    const createAppointment = new CreateUserService(
+    const createUser = new CreateUserService(
       fakeUsersRepository,
       fakeHashProvider
     );
 
-    const appointment = await createAppointment.execute({
+    const appointment = await createUser.execute({
       name: "fulano",
       email: "fulano@gmail.com",
       password: "123456",
