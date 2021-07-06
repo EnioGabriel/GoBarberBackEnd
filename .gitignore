@@ -5,6 +5,7 @@ build/
 tmp/
 temp/
 yarn.lock
+coverage/
 
 tmp/*
 !tmp/.gitkeep
