@@ -14,13 +14,13 @@ describe("CreateUser", () => {
       fakeHashProvider
     );
 
-    const appointment = await createUser.execute({
+    const user = await createUser.execute({
       name: "fulano",
       email: "fulano@gmail.com",
       password: "123456",
     });
 
-    expect(appointment).toHaveProperty("id");
+    expect(user).toHaveProperty("id");
   });
 
   // it: isso
