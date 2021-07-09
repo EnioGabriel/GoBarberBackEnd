@@ -20,6 +20,7 @@ usersRouter.post("/", usersController.create);
 //Patch: usado qnd quer alterar um único campo. Diferente do put
 usersRouter.patch(
   "/avatar",
+  // deixando as rotas disponíveis apenas se o usuário estiver logado
   ensureAuthenticated,
   upload.single("avatar"),
   userAvatarController.update
