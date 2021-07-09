@@ -4,17 +4,21 @@ import UpdateUserAvatarService from "./UpdateUserAvatarService";
 
 import AppError from "@shared/errors/AppError";
 
-describe("UpdateUserAvatar", () => {
-  // it: isso
-  it("should be able to update avatar", async () => {
-    const fakeStoreProvider = new FakeStoreProvider();
-    const fakeUsersRepository = new FakeUsersRepository();
+let fakeStoreProvider: FakeStoreProvider;
+let fakeUsersRepository: FakeUsersRepository;
+let updateUserAvatar: UpdateUserAvatarService;
 
-    const updateUserAvatar = new UpdateUserAvatarService(
+describe("UpdateUserAvatar", () => {
+  beforeEach(() => {
+    fakeStoreProvider = new FakeStoreProvider();
+    fakeUsersRepository = new FakeUsersRepository();
+    updateUserAvatar = new UpdateUserAvatarService(
       fakeUsersRepository,
       fakeStoreProvider
     );
-
+  });
+  // it: isso
+  it("should be able to update avatar", async () => {
     const user = await fakeUsersRepository.create({
       name: "teste",
       email: "teste@gmail.com",
@@ -30,15 +34,7 @@ describe("UpdateUserAvatar", () => {
   });
 
   it("should not be able to update avatar from non existing user", async () => {
-    const fakeStoreProvider = new FakeStoreProvider();
-    const fakeUsersRepository = new FakeUsersRepository();
-
-    const updateUserAvatar = new UpdateUserAvatarService(
-      fakeUsersRepository,
-      fakeStoreProvider
-    );
-
-    expect(
+    await expect(
       updateUserAvatar.execute({
         user_id: "non-existing-user",
         avatarFilename: "avatar.jpg",
@@ -47,16 +43,8 @@ describe("UpdateUserAvatar", () => {
   });
 
   it("should delete old avatar when updating new one", async () => {
-    const fakeStoreProvider = new FakeStoreProvider();
-    const fakeUsersRepository = new FakeUsersRepository();
-
     // espionando o metodo delete file de fakeStorageProvider e armmaxendo na const
     const deleteFile = jest.spyOn(fakeStoreProvider, "deleteFile");
-
-    const updateUserAvatar = new UpdateUserAvatarService(
-      fakeUsersRepository,
-      fakeStoreProvider
-    );
 
     const user = await fakeUsersRepository.create({
       name: "teste",
