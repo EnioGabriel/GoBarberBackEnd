@@ -1,13 +1,14 @@
 // Classe para realizar testes isolados do banco de dados
 
 import { uuid } from "uuidv4";
-import { isEqual, getMonth, getYear } from "date-fns";
+import { isEqual, getMonth, getYear, getDate } from "date-fns";
 
 import IAppointmentRepository from "@modules/appointments/repositories/IAppointmentsRepositories";
 import ICreateAppointmentDTO from "@modules/appointments/dtos/ICreateAppointmentDTO";
 
 import Appointment from "../../infra/typeorm/entities/Appointment";
 import IFindAllInMonthFromProviderDTO from "@modules/appointments/dtos/IFindAllinMonthFromProviderDTO";
+import IFindAllInDayFromProviderDTO from "@modules/appointments/dtos/IFindAllInDayFromProviderDTO";
 
 class AppointmentsRepository implements IAppointmentRepository {
   // Criando array de appointment
@@ -29,6 +30,23 @@ class AppointmentsRepository implements IAppointmentRepository {
     const appointments = this.appointments.filter(
       (appointment) =>
         appointment.provider_id === provider_id &&
+        getMonth(appointment.date) + 1 === month && // +1 pois o mes começa em zero
+        getYear(appointment.date) === year
+    );
+
+    return appointments;
+  }
+
+  public async findAllInDayFromProvider({
+    provider_id,
+    day,
+    month,
+    year,
+  }: IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
+    const appointments = this.appointments.filter(
+      (appointment) =>
+        appointment.provider_id === provider_id &&
+        getDate(appointment.date) === day &&
         getMonth(appointment.date) + 1 === month && // +1 pois o mes começa em zero
         getYear(appointment.date) === year
     );
