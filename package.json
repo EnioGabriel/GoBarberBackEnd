@@ -11,9 +11,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "@joi/date": "^2.1.0",
     "@types/cors": "^2.8.10",
     "@types/nodemailer": "^6.4.3",
     "bcryptjs": "^2.4.3",
+    "celebrate": "^15.0.0",
     "cors": "^2.8.5",
     "date-fns": "^2.22.1",
     "express": "^4.17.1",
@@ -32,6 +34,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.12",
+    "@types/hapi__joi": "^17.1.7",
     "@types/jest": "^26.0.23",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/mongodb": "^3.6.20",
