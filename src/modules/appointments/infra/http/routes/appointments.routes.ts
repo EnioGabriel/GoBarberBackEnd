@@ -1,22 +1,29 @@
 //Responsabilidade da rota: receber requisiçoes e retornar erros
 
-/**
- * Appointment = compromisso/agendamento
- */
-
 import { Router } from "express";
+import { celebrate, Segments, Joi } from "celebrate";
 
 import ensureAuthenticated from "@modules/users/infra/http/middlewares/ensureAuthenticated";
 import ProviderAppointmentsController from "../controllers/ProviderAppointmentsController";
 import AppointmentsController from "../controllers/AppointmentsController";
 
-const appointmentRouter = Router();
+const appointmentsRouter = Router();
 const appointmentsController = new AppointmentsController();
 const providerAppointmentsController = new ProviderAppointmentsController();
 
-appointmentRouter.use(ensureAuthenticated); // aplicando ensure em todas as rotas de agendamento
+appointmentsRouter.use(ensureAuthenticated); // aplicando ensure em todas as rotas de agendamento
 
-appointmentRouter.post("/", appointmentsController.create);
-appointmentRouter.get("/me", providerAppointmentsController.index);
+appointmentsRouter.post(
+  "/",
+  celebrate({
+    [Segments.BODY]: {
+      provider_id: Joi.string().uuid().required(),
+      date: Joi.required(),
+    },
+  }),
+  appointmentsController.create
+);
 
-export default appointmentRouter;
+appointmentsRouter.get("/me", providerAppointmentsController.index);
+
+export default appointmentsRouter;
