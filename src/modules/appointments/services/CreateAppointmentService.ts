@@ -76,13 +76,6 @@ class CreateAppointmentService {
       )}`
     );
 
-    console.log(
-      `provider-appointments:${provider_id}:${format(
-        appointmentDate,
-        "yyyy-M-d"
-      )}`
-    );
-
     return appointment;
   }
 }
