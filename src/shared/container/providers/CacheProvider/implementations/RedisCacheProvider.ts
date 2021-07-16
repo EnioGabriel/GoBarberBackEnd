@@ -20,11 +20,29 @@ export default class RedisCacheProvider implements ICacheProvider {
       return null;
     }
 
-    // transformando data em tipo T para corrigir o return
+    // transformando dados em tipo T para corrigir o return
     const parsedData = JSON.parse(data) as T;
 
     return parsedData;
   }
 
-  public async invalidation(key: string): Promise<void> {}
+  public async invalidate(key: string): Promise<void> {
+    await this.client.del(key);
+  }
+
+  // Apaga todo o cache de buscas
+  public async invalidatePrefix(prefix: string): Promise<void> {
+    // buscando todas as chaves que contenham provider list com
+    // padrão de 'list-providers:' e qlqr coisa dps disso. Representado pelo '*'
+    const keys = await this.client.keys(`${prefix}:*`);
+
+    //pipeline(): Performático para executar múltiplas funções ao mesmo tempo
+    const pipeline = this.client.pipeline();
+
+    keys.forEach((key) => {
+      pipeline.del(key);
+    });
+
+    await pipeline.exec();
+  }
 }
