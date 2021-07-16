@@ -7,6 +7,7 @@ import INotificationsRepository from "@modules/notifications/repositories/INotif
 
 import Appointment from "../infra/typeorm/entities/Appointment";
 import IAppointmentsRepository from "../repositories/IAppointmentsRepositories";
+import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
 
 interface IRequest {
   provider_id: string;
@@ -21,7 +22,10 @@ class CreateAppointmentService {
     private appointmentsRepository: IAppointmentsRepository,
 
     @inject("NotificationsRepository") // nome capturado lá de index do container
-    private notificationsRepository: INotificationsRepository
+    private notificationsRepository: INotificationsRepository,
+
+    @inject("CacheProvider") // nome capturado lá de index do container
+    private cacheProvider: ICacheProvider
   ) {}
 
   public async execute({
@@ -63,6 +67,21 @@ class CreateAppointmentService {
       recipient_id: provider_id,
       content: `Novo Agendamento para dia ${dateFormatted}`,
     });
+
+    // Limpando cache após as buscas serem atualizadas
+    await this.cacheProvider.invalidate(
+      `provider-appointments:${provider_id}:${format(
+        appointmentDate,
+        "yyyy-M-d"
+      )}`
+    );
+
+    console.log(
+      `provider-appointments:${provider_id}:${format(
+        appointmentDate,
+        "yyyy-M-d"
+      )}`
+    );
 
     return appointment;
   }
