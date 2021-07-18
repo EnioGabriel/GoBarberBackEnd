@@ -17,10 +17,12 @@ import "@shared/container";
 const app = express();
 
 //Cors evita que sites não confiaveis visite esse site
-app.use(rateLimiter);
 app.use(cors());
 app.use(express.json());
 app.use("/files", express.static(uploadConfig.uploadsFolder));
+// a posição onde esse midleware é colocada, faz com que seja aplicado deste ponto pra baixo
+// ou seja, pula os outros 3 app.use() ali de cima
+app.use(rateLimiter);
 app.use(routes);
 
 app.use(errors());
