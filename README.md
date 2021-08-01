@@ -5,7 +5,7 @@
 Gerencia todo back-end da parte [web](https://github.com/EnioGabriel/GoBarberWeb) e [mobile](https://github.com/EnioGabriel/appgobarber) da aplicação
 
 ## Pré-requisitos
-Ter instalado os dockers do postgres, redis e mondoDB em sua máquina.
+Ter instalado os dockers do postgres, redis e mongoDB em sua máquina.
 
 ## :zap: Executando o Projeto
 
