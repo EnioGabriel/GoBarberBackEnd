@@ -31,8 +31,8 @@ class UpdateUserAvatarService {
       );
     }
 
-    // Se o usuário já tinha um avatar antes, deleta para colocar o novo
-    if (user.avatar) {
+    // Se o usuário já tinha um avatar antes e se não for o avatar padrão, deleta para colocar o novo
+    if (user.avatar && user.avatar != "profile_avatar.png") {
       await this.storageProvider.deleteFile(user.avatar);
     }
 
