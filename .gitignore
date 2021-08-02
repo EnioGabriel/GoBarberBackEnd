@@ -3,7 +3,7 @@
 node_modules/
 build/
 dist/
-tmp/
+# tmp/
 temp/
 yarn.lock
 yarn-error.log
@@ -11,5 +11,5 @@ yarn-error.log
 ormconfig.json
 coverage/
 
-tmp/*
+# tmp/*
 !tmp/.gitkeep

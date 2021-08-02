@@ -12,6 +12,7 @@ interface IRequest {
   name: string;
   email: string;
   password: string;
+  avatar: string;
 }
 
 @injectable()
@@ -35,11 +36,13 @@ class CreateUserService {
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password); // Criptografando a senha
+    const avatarDefault = "profile_avatar.png";
 
     const user = this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
+      avatar: avatarDefault,
     });
 
     await this.cacheProvider.invalidatePrefix("providers-list");
