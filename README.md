@@ -13,6 +13,10 @@ O projeto foi feito com as seguintes tecnologias:
 - [NodeJS](https://nodejs.org/en/)
 - [ExpressJS](https://expressjs.com/pt-br/)
 - [JWT](https://jwt.io/)
+- [MongoDB](https://www.mongodb.com/pt-br)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Redis](https://redis.io/)
+- [TypeORM](https://typeorm.io/)
 
 ## Pré-requisitos
 Ter instalado os dockers do postgres, redis e mongoDB em sua máquina.
